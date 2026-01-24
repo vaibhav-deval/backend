@@ -6,25 +6,43 @@ let NOTES = [];
 app.get("/", (req, res) => {
   res.send("Home Page");
 });
+app.get("/notes", (req, res) => {
+  if (NOTES == "") res.send("Nothing to show");
+  else {
+    res.send(NOTES);
+    console.log("All Notes");
+  }
+});
+
+app.get("/notes/:index", (req, res) => {
+  if (!NOTES[req.params.index]) res.send("Nothing at this index");
+  else {
+    res.send(NOTES[req.params.index]);
+
+    console.log(`note at index ${req.params.index}`);
+  }
+});
 
 app.post("/notes", (req, res) => {
   NOTES.push(req.body);
   res.send(req.body);
 });
 
-app.get("/notes/:index", (req, res) => {
-  res.send(NOTES[req.params.index]);
-});
-
 app.delete("/notes/:index", (req, res) => {
-  delete NOTES[req.params.index];
-  res.send(`note deleted at index ${req.params.index}`);
+  if (!NOTES[req.params.index]) res.send("Note not found at this index");
+  else {
+    delete NOTES[req.params.index];
+    res.send(`note deleted at index ${req.params.index}`);
+  }
 });
 
 app.patch("/notes/:index", (req, res) => {
-  NOTES[req.params.index].description = req.body.description;
-  console.log(NOTES[req.params.index]);
-  res.send("note updated");
+  if (!NOTES[req.params.index]) res.send("Note not found at this index");
+  else {
+    NOTES[req.params.index].description = req.body.description;
+    console.log(NOTES[req.params.index]);
+    res.send("note updated");
+  }
 });
 
 module.exports = app;
