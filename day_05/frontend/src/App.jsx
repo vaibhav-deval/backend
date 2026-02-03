@@ -1,37 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 const App = () => {
-  const [notes, setNotes] = useState([
-    {
-      title: "note title 1",
-      description: "note description 1",
-    },
-    {
-      title: "note title 1",
-      description: "note description 1",
-    },
-    {
-      title: "note title 1",
-      description: "note description 1",
-    },
-    {
-      title: "note title 1",
-      description: "note description 1",
-    },
-  ]);
+  const [notes, setNotes] = useState([]);
+  useEffect(() => {
+    fetchNotes();
+  }, []);
 
-  axios.get("http://localhost:3000/api/notes").then((res) => {
-    setNotes(res.data.notes ? res.data.notes : null);
-  });
-  
-  
+  const fetchNotes = async () =>    
+    axios.get("http://localhost:3000/api/notes").then((res) => {
+      setNotes(res.data.notes ? res.data.notes : null);
+    });
 
   return (
     <div className="app">
       <div className="notes">
-        {notes.map((note) => (
-          <div className="note" >
+        {notes.map((note,idx) => (
+          <div className="note" key={idx }>
             <h1 className="title">{note.title}</h1>
             <p>{note.description}</p>
           </div>
