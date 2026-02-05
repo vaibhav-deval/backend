@@ -39,12 +39,37 @@ body {
 }
 
 .note {
+  .s-no {
+    color: rgb(196, 23, 23);
+    font-size: 0.6rem;
+  }
+  button {
+    background: #353535;
+    padding-inline: 1rem;
+    padding-block: 0.2rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: rgb(238, 238, 238);
+    cursor: pointer;
+  }
   width: 25rem;
+  position: relative;
   background: #3b3b3b;
   padding-block: 1rem;
   padding-inline: 1rem;
   border-radius: 1.2rem;
   line-height: 1.5rem;
+  .edit-note {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+  }
+  .delete-note {
+    position: absolute;
+    top: 0.5rem;
+    right: 7rem;
+  }
+
   h1 {
     color: rgb(212, 146, 53);
   }
@@ -53,9 +78,32 @@ body {
   }
 }
 
-.note-form{
+.note-form {
   display: flex;
   gap: 1rem;
-  padding-inline:1rem ;
+  padding-inline: 1rem;
   padding-block: 3rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  input {
+    outline: none;
+    background: #3b3b3b;
+    border: none;
+    padding: 0.5rem;
+    color: rgb(238, 238, 238);
+    border-radius: 0.5rem;
+    width: 20rem;
+  }
+  button {
+    background: #353535;
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+    width: 8rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: rgb(238, 238, 238);
+    cursor: pointer;
+  }
 }
