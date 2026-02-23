@@ -2,6 +2,7 @@ const express = require("express");
 const userModel = require("../model/user.model");
 const authRouter = express.Router();
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 authRouter.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
@@ -11,7 +12,9 @@ authRouter.post("/register", async (req, res) => {
       message: "user already exists",
     });
   }
-  const user = await userModel.create({ name, email, password });
+
+  const hash = crypto.createHash("md5").update(password).digest("hex");
+  const user = await userModel.create({ name, email, password: hash });
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
   res.cookie("jwt_token", token);
@@ -36,7 +39,7 @@ authRouter.post("/login", async (req, res) => {
     });
   }
 
-  const isPasswordMatch = user.password === password;
+  const isPasswordMatch = user.password === crypto.createHash("md5").update(password).digest("hex");;
 
   if (!isPasswordMatch) {
     return res.status(401).json({
