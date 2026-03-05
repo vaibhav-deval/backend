@@ -3,25 +3,24 @@ import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import "../style/form.scss";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';   
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const{handleLogin,loading}=useAuth()
-  const navigate=useNavigate()
-  
-  if(loading){
-    return <h1>Loading...</h1>
+  const { user, handleLogin, loading } = useAuth();
+  const navigate = useNavigate();
+
+  if (loading) {
+    return <h1>Loading...</h1>;
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    handleLogin(username,password)
-    .then(res=>{
-      console.log(res)
-      navigate("/")
-    })
+    await handleLogin(username, password).then((res) => { 
+      console.log(res);
+      navigate("/");
+    });
   }
   return (
     <main>
