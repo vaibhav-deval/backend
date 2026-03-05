@@ -86,4 +86,17 @@ async function loginController(req, res) {
   });
 }
 
-module.exports = { registerController, loginController };
+async function getCurrentUserController(req, res) {
+  const userId = req.user.id;
+  const user = await userModel.findById(userId);
+  res.status(200).json({
+    user: {
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      bio: user.bio,
+    },
+  });
+}
+
+module.exports = { registerController, loginController, getCurrentUserController };
