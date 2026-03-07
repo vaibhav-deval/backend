@@ -1,18 +1,26 @@
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link,useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 const Register = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const { user, handleRegister, loading } = useAuth();
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-   
+    const response = await handleRegister(name, username, email, password);
+    console.log(response);
+    navigate("/login");
   }
   return (
-    <main>
+    <div className="main">
       <div className="form-container">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
@@ -57,7 +65,7 @@ const Register = () => {
           </Link>
         </p>
       </div>
-    </main>
+    </div>
   );
 };
 

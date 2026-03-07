@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./features/auth/pages/Login";
 import Register from "./features/auth/pages/Register";
+import Feed from "./features/post/pages/Feed";
 
 export function AppRoutes() {
   return (
@@ -8,7 +9,7 @@ export function AppRoutes() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<h1>Welcome To The App</h1>} />
+        <Route path="/" element={<Feed />} />
       </Routes>
     </BrowserRouter>
   );

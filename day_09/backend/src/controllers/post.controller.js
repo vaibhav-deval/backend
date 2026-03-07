@@ -57,7 +57,10 @@ async function likePost(req, res) {
   if (!post) {
     return res.status(404).json({ message: "Post not found" });
   }
-  const isAlreadyLiked = await likeModel.findOne({ post: postId, user: req.user.username });
+  const isAlreadyLiked = await likeModel.findOne({
+    post: postId,
+    user: req.user.username,
+  });
   if (isAlreadyLiked) {
     return res.status(200).json({ message: "Post already liked" });
   }
@@ -70,4 +73,20 @@ async function likePost(req, res) {
   res.status(200).json({ message: "Post liked successfully", likedPost });
 }
 
-module.exports = { createPost, getPosts, getPostById, likePost };
+async function getFeed(req, res) {
+  const user = req.user.username;
+  const posts = await Promise.all(
+    (await postModel.find().populate("user").lean()).map(async (post) => {
+      const isLiked = await likeModel.findOne({
+        post: post._id,
+        user: user,
+      });
+      post.isLiked = !!isLiked;
+      return post;
+    }),
+  );
+
+  res.status(200).json({ message: "Feed fetched successfully", posts });
+}
+
+module.exports = { createPost, getPosts, getPostById, likePost, getFeed };

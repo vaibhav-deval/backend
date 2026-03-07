@@ -12,9 +12,11 @@ postRouter.post(
   identifyUser,
   postController.createPost,
 );
-postRouter.get("/",identifyUser, postController.getPosts);
+postRouter.get("/", identifyUser, postController.getPosts);
 postRouter.get("/details/:postId", identifyUser, postController.getPostById);
 
 postRouter.post("/like/:postId", identifyUser, postController.likePost);
+
+postRouter.get("/feed/", identifyUser, postController.getFeed);
 
 module.exports = postRouter;

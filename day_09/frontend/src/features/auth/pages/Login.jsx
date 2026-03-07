@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import "../style/form.scss";
 import { useState } from "react";
@@ -23,7 +22,7 @@ const Login = () => {
     });
   }
   return (
-    <main>
+    <div className="main">
       <div className="form-container">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
@@ -52,7 +51,7 @@ const Login = () => {
           </Link>
         </p>
       </div>
-    </main>
+    </div>
   );
 };
 

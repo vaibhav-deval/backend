@@ -1,0 +1,91 @@
+.feed_page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  .feed {
+    padding-block: 2rem;
+    background-color: #1e1d1c;
+    max-width: 350px;
+    .posts {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      .post {
+        border-radius: 0.6rem;
+        padding-block: 1rem;
+        padding-inline: 0.5rem;
+        background: #000;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .post_user {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          .img_wrapper {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255, 0, 0, 0);
+            background: conic-gradient(
+                from 45deg,
+                rgb(253, 108, 5),
+                rgb(153, 0, 255),
+                rgb(253, 108, 5)
+              )
+              border-box;
+            .user_image {
+              width: clamp(10px, 10vw, 30px);
+              aspect-ratio: 1/1;
+              border-radius: 50%;
+              background-color: #ccc;
+            }
+          }
+          .user_name {
+            font-weight: bold;
+            font-size: clamp(0.6rem, 2vw, 1rem);
+          }
+        }
+        .post_image {
+          width: 100%;
+        }
+        .icons {
+          button {
+            border: none;
+            border-radius: 0.6rem;
+            background: transparent;
+            outline: none;
+            cursor: pointer;
+            svg {
+              width: clamp(12px, 3vw, 20px);
+              aspect-ratio: 1/1;
+              color: #ffffff;
+              &.like {
+                color: red;
+              }
+            }
+          }
+          display: flex;
+          justify-content: space-between;
+
+          .left {
+            display: flex;
+            gap: 1rem;
+          }
+          .right {
+            display: flex;
+          }
+        }
+        .bottom {
+          .caption {
+            font-size: clamp(0.6rem, 2vw, 1rem);
+          }
+        }
+      }
+    }
+  }
+}
