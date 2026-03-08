@@ -1,9 +1,31 @@
 .feed_page {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  padding-block: 2rem;
+  .navbar {
+    padding-block: 0.5rem;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding-inline: 2rem;
+    text-transform: uppercase;
+    p {
+      font-size: clamp(0.6rem, 2vw, 1rem);
+      font-weight: bold;
+    }
+    button {
+      border: none;
+      border-radius: 0.6rem;
+      background: rgb(255, 0, 93);
+      outline: none;
+      padding-inline: 2rem;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
   .feed {
-    padding-block: 2rem;
     background-color: #1e1d1c;
     max-width: 350px;
     .posts {

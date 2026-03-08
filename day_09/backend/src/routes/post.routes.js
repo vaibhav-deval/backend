@@ -16,6 +16,7 @@ postRouter.get("/", identifyUser, postController.getPosts);
 postRouter.get("/details/:postId", identifyUser, postController.getPostById);
 
 postRouter.post("/like/:postId", identifyUser, postController.likePost);
+postRouter.post("/unlike/:postId", identifyUser, postController.unLikePost);
 
 postRouter.get("/feed/", identifyUser, postController.getFeed);
 

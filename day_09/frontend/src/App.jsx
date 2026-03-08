@@ -3,6 +3,8 @@ import "./style.scss";
 import { AuthProvider } from "./features/auth/auth.context.jsx";
 import { PostProvider } from "./features/post/post.context.jsx";
 
+
+
 const App = () => {
   return (
     <AuthProvider>
