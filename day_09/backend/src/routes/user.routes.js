@@ -7,6 +7,10 @@ const userRouter = express.Router();
 
 userRouter.post("/follow/:username",identifyUser, userController.followUserController);
 userRouter.post("/unfollow/:username",identifyUser, userController.unfollowUserController);
+userRouter.get("/following", identifyUser, userController.getFollowingController);
+userRouter.get("/suggestions", identifyUser, userController.getSuggestionsController);
+
+
  
 
 

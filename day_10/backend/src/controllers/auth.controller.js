@@ -16,7 +16,7 @@ async function registerUser(req, res) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = new userModel.create({
+  const newUser = await userModel.create({
     username,
     email,
     password: hashedPassword,
@@ -29,11 +29,7 @@ async function registerUser(req, res) {
   res.cookie("token", token);
   return res.status(201).json({
     message: "User registered successfully",
-    user: {
-      id: newUser._id,
-      username: newUser.username,
-      email: newUser.email,
-    },
+    user: {},
   });
 }
 
@@ -66,4 +62,14 @@ async function loginUser(req, res) {
     },
   });
 }
-module.exports = { registerUser, loginUser };
+
+async function getMe(req, res) {
+  const user = await userModel.findById(req.user.id);
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+}
+
+module.exports = { registerUser, loginUser, getMe };
