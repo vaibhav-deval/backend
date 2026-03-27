@@ -1,4 +1,6 @@
 const userModel = require("../models/user.model");
+
+const redis = require("../config/cache");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -35,7 +37,9 @@ async function registerUser(req, res) {
 
 async function loginUser(req, res) {
   const { email, password, username } = req.body;
-  const user = await userModel.findOne({ $or: [{ email }, { username }] });
+  const user = await userModel
+    .findOne({ $or: [{ email }, { username }] })
+    .select("+password");
   if (!user) {
     return res.status(400).json({
       message: "Invalid email or username",
@@ -70,6 +74,21 @@ async function getMe(req, res) {
       message: "User not found",
     });
   }
+  return res.status(200).json({
+    user,
+    message: "User Fetched ",
+  });
 }
 
-module.exports = { registerUser, loginUser, getMe };
+async function logoutUser(req, res) {
+  const token = req.cookies.token;
+  res.clearCookie("token");
+
+  await redis.set(token, Date.now().toString(), "EX", 60 * 60);
+
+  res.status(200).json({
+    message: "user logged out successfully ",
+  });
+}
+
+module.exports = { registerUser, loginUser, getMe, logoutUser };

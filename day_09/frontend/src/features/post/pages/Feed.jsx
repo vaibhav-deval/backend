@@ -66,7 +66,9 @@ const Feed = () => {
     <div className="main">
       <div className="user_info">
         <div className="following">
-          <h3>Following <span>{following_length}</span></h3>
+          <h3>
+            Following <span>{following_length}</span>
+          </h3>
           {following.map((user) => {
             return users(user);
           })}
