@@ -1,5 +1,5 @@
 import { login, register, logout, getMe } from "../services/auth.api";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../auth.context";
 
 export const useAuth = () => {
@@ -28,10 +28,25 @@ export const useAuth = () => {
     setLoading(false);
   }
 
-  async function handeleLogout() {
+  async function handelLogout() {
     setLoading(true);
     const data = await logout();
     setUser(null);
     setLoading(false);
   }
+
+  useEffect(() => {
+    handelGetMe();
+  }, []);
+
+  return {
+    user,
+    setUser,
+    loading,
+    setLoading,
+    handelGetMe,
+    handelLogin,
+    handelRegister,
+    handelLogout,
+  };
 };
