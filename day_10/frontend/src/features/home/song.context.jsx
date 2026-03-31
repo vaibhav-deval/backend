@@ -3,7 +3,7 @@ import { useState, createContext } from "react";
 export const SongContext = createContext();
 
 export const SongProvider = ({ children }) => {
-  const [song, setSong] = useState({});
+  const [song, setSong] = useState(null);
   const [loading, setLoading] = useState(false);
   return (
     <SongContext.Provider value={{ song, setSong, loading, setLoading }}>

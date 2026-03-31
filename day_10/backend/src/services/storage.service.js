@@ -13,4 +13,4 @@ async function uploadFile({ buffer, filename, folder = "" }) {
   return file;
 }
 
-module.exports = uploadFile;
+module.exports = {uploadFile};

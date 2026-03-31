@@ -1,13 +1,15 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useSong } from '../hooks/useSong.js';
+import React, { useRef, useState, useEffect } from "react";
+import { useSong } from "../hooks/useSong.js";
+import "../style/Player.scss";
 
 const Player = () => {
-  const { song } = useSong()
+  const { song } = useSong();
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [speed, setSpeed] = useState(1);
+  const [volume, setVolume] = useState(1);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -19,18 +21,25 @@ const Player = () => {
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
+      audio.volume = volume;
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
       const updateTime = () => setCurrentTime(audio.currentTime);
       const updateDuration = () => setDuration(audio.duration);
       const handleEnded = () => setIsPlaying(false);
 
-      audio.addEventListener('timeupdate', updateTime);
-      audio.addEventListener('loadedmetadata', updateDuration);
-      audio.addEventListener('ended', handleEnded);
+      audio.addEventListener("timeupdate", updateTime);
+      audio.addEventListener("loadedmetadata", updateDuration);
+      audio.addEventListener("ended", handleEnded);
 
       return () => {
-        audio.removeEventListener('timeupdate', updateTime);
-        audio.removeEventListener('loadedmetadata', updateDuration);
-        audio.removeEventListener('ended', handleEnded);
+        audio.removeEventListener("timeupdate", updateTime);
+        audio.removeEventListener("loadedmetadata", updateDuration);
+        audio.removeEventListener("ended", handleEnded);
       };
     }
   }, [song]);
@@ -65,10 +74,15 @@ const Player = () => {
     setSpeed(newSpeed);
   };
 
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+  };
+
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
   const handleProgressChange = (e) => {
@@ -89,13 +103,14 @@ const Player = () => {
       <audio ref={audioRef} src={song.url} preload="metadata" />
       <div className="player-info">
         <h3>{song.title}</h3>
-        <img src={song.posterUrl} alt={song.title} style={{ width: '100px', height: '100px' }} />
+        <img
+          src={song.posterUrl}
+          alt={song.title}
+        />
       </div>
       <div className="player-controls">
         <button onClick={backward5}>⏪ -5s</button>
-        <button onClick={togglePlayPause}>
-          {isPlaying ? '⏸️' : '▶️'}
-        </button>
+        <button onClick={togglePlayPause}>{isPlaying ? "⏸️" : "▶️"}</button>
         <button onClick={forward5}>+5s ⏩</button>
       </div>
       <div className="player-progress">
@@ -106,18 +121,31 @@ const Player = () => {
           max="100"
           value={duration ? (currentTime / duration) * 100 : 0}
           onChange={handleProgressChange}
-          style={{ width: '300px' }}
         />
         <span>{formatTime(duration)}</span>
       </div>
       <div className="player-speed">
         <label>Speed: </label>
-        <select value={speed} onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}>
+        <select
+          value={speed}
+          onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}
+        >
           <option value={0.5}>0.5x</option>
           <option value={1}>1x</option>
           <option value={1.5}>1.5x</option>
           <option value={2}>2x</option>
         </select>
+      </div>
+      <div className="player-volume">
+        <span>🔊</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+        />
       </div>
     </div>
   );

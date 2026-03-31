@@ -20,7 +20,6 @@ export const init = async ({ landmarkerRef, videoRef, streamRef }) => {
   await videoRef.current.play();
 };
 
-
 export const detect = ({ landmarkerRef, videoRef, setExpression }) => {
   if (!landmarkerRef.current || !videoRef.current) return;
   const results = landmarkerRef.current.detectForVideo(
@@ -39,12 +38,14 @@ export const detect = ({ landmarkerRef, videoRef, setExpression }) => {
     const frownRight = getScore("mouthFrownRight");
     let currentExpression = "Neutral";
     if (smileLeft > 0.5 && smileRight > 0.5) {
-      currentExpression = "Happy 😄";
+      currentExpression = "happy";
     } else if (jawOpen > 0.4 && browUp > 0.3) {
-      currentExpression = "Surprised 😲";
+      currentExpression = "surprised";
     } else if (frownLeft > 0.02 && frownRight > 0.02) {
-      currentExpression = "Sad 😢";
+      currentExpression = "sad";
     }
     setExpression(currentExpression);
+    
+    return currentExpression;
   }
 };
