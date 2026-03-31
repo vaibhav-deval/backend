@@ -1,10 +1,11 @@
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 
 export const init = async ({ landmarkerRef, videoRef, streamRef }) => {
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
-  );
-  landmarkerRef.current = await FaceLandmarker.createFromOptions(vision, {
+  try {
+    const vision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
+    );
+    landmarkerRef.current = await FaceLandmarker.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath:
         "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
@@ -13,11 +14,27 @@ export const init = async ({ landmarkerRef, videoRef, streamRef }) => {
     runningMode: "VIDEO",
     numFaces: 1,
   });
+
   streamRef.current = await navigator.mediaDevices.getUserMedia({
     video: true,
   });
+
+  if (!videoRef?.current) {
+    console.warn("FaceExpression init: videoRef not available; aborting stream assignment");
+    streamRef.current.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+    return;
+  }
+
   videoRef.current.srcObject = streamRef.current;
   await videoRef.current.play();
+  } catch (error) {
+    console.error("FaceExpression init error:", error);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+  }
 };
 
 export const detect = ({ landmarkerRef, videoRef, setExpression }) => {

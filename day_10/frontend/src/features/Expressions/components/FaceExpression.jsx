@@ -7,9 +7,22 @@ export default function FaceExpression({ onClick = () => {} }) {
   const [expression, setExpression] = useState("Detecting...");
 
   useEffect(() => {
-    init({ landmarkerRef, videoRef, streamRef });
+    let isMounted = true;
+
+    const start = async () => {
+      await init({ landmarkerRef, videoRef, streamRef });
+      if (!isMounted) {
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach((track) => track.stop());
+          streamRef.current = null;
+        }
+      }
+    };
+
+    start();
 
     return () => {
+      isMounted = false;
       if (landmarkerRef.current) {
         landmarkerRef.current.close();
       }
@@ -20,10 +33,10 @@ export default function FaceExpression({ onClick = () => {} }) {
   }, []);
   const handleClick = async () => {
     const expression = detect({ landmarkerRef, videoRef, setExpression });
-    
+
     onClick(expression);
-    
   };
+
   return (
     <div style={{ textAlign: "center" }}>
       <video
@@ -34,7 +47,7 @@ export default function FaceExpression({ onClick = () => {} }) {
       <h2>{expression}</h2>
       <button
         onClick={() => {
-          handleClick()
+          handleClick();
         }}
       >
         get expression

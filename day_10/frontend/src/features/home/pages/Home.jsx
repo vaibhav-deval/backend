@@ -1,13 +1,18 @@
-
+import Navbar from "../../shared/components/Navbar";
 import FaceExpression from "../../Expressions/components/FaceExpression";
 import Player from "../components/Player";
 import { useSong } from "../hooks/useSong";
 
 const Home = () => {
-  const {handleGetSong}=useSong()
+  const { handleGetSong } = useSong();
   return (
     <>
-      <FaceExpression onClick={(expression)=>{handleGetSong({mood:expression})}} />
+    <Navbar/>
+      <FaceExpression
+        onClick={(expression) => {
+          handleGetSong({ mood: expression });
+        }}
+      />
       <Player />
     </>
   );
