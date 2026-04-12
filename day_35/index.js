@@ -1,6 +1,19 @@
 import "dotenv/config";
 import { ChatMistralAI } from "@langchain/mistralai";
+import { HumanMessage, tool, createAgent } from "langchain";
 import readline from "readline/promises";
+import * as z from "zod";
+import { sendEmail, transporterReady } from "./services/mail.service.js";
+
+const emailTool = tool(sendEmail, {
+  name: "emailTool",
+  description: "Use this tool to send emails.",
+  schema: z.object({
+    to: z.string().describe("The recipient's email address"),
+    html: z.string().describe("The HTML content of the email"),
+    subject: z.string().describe("The subject of the email"),
+  }),
+});
 
 const messages = [];
 const rl = readline.createInterface({
@@ -19,12 +32,21 @@ const model = new ChatMistralAI({
   temperature: 0,
 });
 
+const agent = createAgent({
+  model,
+  tools: [emailTool],
+});
+
+await transporterReady
+  .then(() => console.log("Email transporter is ready to send emails"))
+  .catch((error) => console.error("Error setting up email transporter:", error));
+
 while (true) {
   const userInput = await rl.question("\x1b[36mYou\x1b[0m: ");
-  messages.push(userInput);
+  messages.push(new HumanMessage(userInput));
 
-  const response = await model.invoke(messages);
+  const response = await agent.invoke({ messages });
 
-  console.log("\n\x1b[33mMistralAI:\x1b[0m\n" + response.text + "\n");
-  messages.push(response.text);
+  messages.push(response.messages[response.messages.length - 1]);
+  console.log(response.messages[response.messages.length - 1].content);
 }
