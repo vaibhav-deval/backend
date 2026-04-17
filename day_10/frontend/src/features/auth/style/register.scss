@@ -3,26 +3,95 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: var(--gradient);
+  animation: fadeIn 1s ease-out;
+
   .form-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    min-width: 300px;
+    gap: 1.5rem;
+    padding: 3rem;
+    border-radius: 16px;
+    min-width: 400px;
+    max-width: 500px;
+    background: var(--secondary-bg);
+    box-shadow: 0 8px 32px var(--shadow);
+    border: 1px solid var(--border);
+    animation: slideIn 0.5s ease-out 0.2s both;
+
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
     form {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.25rem;
+
       .form-group {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+
+        label {
+          font-weight: 500;
+          color: var(--text-primary);
+        }
+
         input {
-          padding: 10px 20px;
-          border-radius: 1rem;
+          padding: 12px 16px;
+          border-radius: 8px;
+          border: 1px solid var(--border);
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--text-primary);
+          font-size: 16px;
+          transition: var(--transition);
+
+          &:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(176, 22, 22, 0.1);
+          }
+
+          &::placeholder {
+            color: var(--text-secondary);
+          }
+        }
+      }
+
+      .button {
+        margin-top: 0.5rem;
+      }
+    }
+
+    .auth-links {
+      text-align: center;
+      margin-top: 1rem;
+
+      a {
+        color: var(--accent);
+        font-weight: 500;
+
+        &:hover {
+          color: var(--accent-hover);
         }
       }
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .register-page .form-container {
+    min-width: 90%;
+    padding: 2rem;
   }
 }

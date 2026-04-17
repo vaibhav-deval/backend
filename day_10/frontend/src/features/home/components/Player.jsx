@@ -95,7 +95,14 @@ const Player = () => {
   };
 
   if (!song || !song.url) {
-    return <div>No song selected</div>;
+    return (
+      <div className="player no-song">
+        <div className="player-info">
+          <h3>No song selected</h3>
+          <p>Detect your mood to get a song recommendation!</p>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -1,0 +1,127 @@
+.face-expression {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+
+  .video-container {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px var(--shadow);
+    border: 2px solid var(--border);
+    transition: var(--transition);
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 40px var(--shadow);
+    }
+
+    video {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      display: block;
+      background: var(--primary-bg);
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    &:hover .overlay {
+      opacity: 1;
+    }
+  }
+
+  .expression-display {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    min-width: 200px;
+    transition: var(--transition);
+
+    &.detecting {
+      color: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    &.happy {
+      color: #ffd700;
+    }
+
+    &.surprised {
+      color: #ff6b6b;
+    }
+
+    &.sad {
+      color: #4ecdc4;
+    }
+
+    &.neutral {
+      color: var(--text-secondary);
+    }
+  }
+
+  .detect-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 24px;
+    background: var(--gradient);
+    color: var(--text-primary);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 16px var(--shadow);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@media (max-width: 480px) {
+  .face-expression {
+    .video-container video {
+      max-width: 100%;
+    }
+
+    .expression-display {
+      font-size: 1.2rem;
+      min-width: 150px;
+    }
+  }
+}
